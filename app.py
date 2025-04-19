@@ -9,6 +9,7 @@ def carregar_dados():
     return pd.read_excel("nobreaks_intelbras.xlsx")
 
 df = carregar_dados()
+df["Modelo"] = df["Modelo"].fillna("").str.strip()  # remover espaços e nulos
 
 # Cabeçalho
 col1, col2 = st.columns([1, 5])
@@ -29,7 +30,7 @@ with st.sidebar:
 df_filtrado = df[
     (df["Tipo"].isin(tipo)) &
     (df["Tensão"].isin(tensao)) &
-    (df["Modelo"].str.contains(modelo, case=False, na=False))
+    (df["Modelo"].str.lower().str.contains(modelo.lower()))
 ]
 
 # Resultados
