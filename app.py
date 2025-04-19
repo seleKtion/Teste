@@ -21,11 +21,16 @@ with col2:
 # Filtros
 with st.sidebar:
     st.header("Filtros")
+    modelo = st.text_input("🔍 Buscar por modelo")
     tipo = st.multiselect("Tipo de nobreak", df["Tipo"].unique(), default=df["Tipo"].unique())
     tensao = st.multiselect("Tensão", df["Tensão"].unique(), default=df["Tensão"].unique())
 
 # Aplicar filtros
-df_filtrado = df[(df["Tipo"].isin(tipo)) & (df["Tensão"].isin(tensao))]
+df_filtrado = df[
+    (df["Tipo"].isin(tipo)) &
+    (df["Tensão"].isin(tensao)) &
+    (df["Modelo"].str.contains(modelo, case=False, na=False))
+]
 
 # Resultados
 st.markdown(f"### Resultados encontrados: {len(df_filtrado)}")
